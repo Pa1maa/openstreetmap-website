@@ -39,8 +39,10 @@ L.OSM.AddMarkers = L.Control.extend({
             else{
                 container.classList.remove("active")
                 map.off("click", onMapClick)
-                marker.remove()
-                marker = null
+                if(marker){
+                    marker.remove()
+                    marker = null
+                }
             }
         })
 
