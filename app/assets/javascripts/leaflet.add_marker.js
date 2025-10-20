@@ -43,5 +43,11 @@ L.OSM.AddMarkers = L.Control.extend({
                 marker = null
             }
         })
+
+        return container
     }
 })
+
+L.OSM.addMarker = function(options){
+    return new L.OSM.AddMarkers(options)
+}
