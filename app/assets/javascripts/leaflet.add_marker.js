@@ -4,7 +4,7 @@ L.OSM.AddMarkers = L.Control.extend({
     },
 
     onAdd: function(map){
-        const container = L.DomUtil.create("div", "leaflet-bar leaflet-control")
+        const container = L.DomUtil.create("div", "leaflet-control")
         const but = L.DomUtil.create("a", "control-button", container)
         but.href = "#"
         but.title = "Mark location"
@@ -33,11 +33,11 @@ L.OSM.AddMarkers = L.Control.extend({
             placing = !placing
 
             if(placing){
-                but.classList.add("active")
+                container.classList.add("active")
                 map.on("click", onMapClick)
             }
             else{
-                but.classList.remove("active")
+                container.classList.remove("active")
                 map.off("click", onMapClick)
                 marker.remove()
                 marker = null
