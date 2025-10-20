@@ -21,7 +21,7 @@ L.OSM.AddMarkers = L.Control.extend({
             }
 
             marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: OSM.getMarker({})}).addTo(map)
-            marker.bindPopup("Lat: " + e.latlng.lat.toFixed(3) + ", Lng: " + e.latlng.lng.toFixed(3))
+            marker.bindPopup("Lat: " + e.latlng.lat.toFixed(3) + ", Lng: " + e.latlng.lng.toFixed(3)).openPopup()
 
             marker.on("click", ()=>{
                 marker.remove()
