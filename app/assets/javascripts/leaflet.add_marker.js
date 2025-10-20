@@ -29,6 +29,8 @@ L.OSM.AddMarkers = L.Control.extend({
             })
         }
 
+        L.OSM._marker = () => marker
+
         L.DomEvent.on(but, "click", L.DomEvent.stopPropagation).on(but, "click", L.DomEvent.preventDefault).on(but, "click", ()=>{
             placing = !placing
 
