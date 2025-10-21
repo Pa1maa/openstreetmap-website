@@ -34,11 +34,8 @@ L.OSM.MarkersControl = L.Control.extend({
 
         let showing = false
         let deleting = false
-        let markerArr = []
         let allMarkerArr = []
-        let nameArr = []
         let name
-        let savedMarker
 
         L.DomEvent.on(saveBut, "click", L.DomEvent.stopPropagation).on(saveBut, "click", L.DomEvent.preventDefault).on(saveBut, "click", ()=>{
             const marker = L.OSM._marker && L.OSM._marker()
