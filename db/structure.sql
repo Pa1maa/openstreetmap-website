@@ -966,6 +966,40 @@ CREATE TABLE public.languages (
 
 
 --
+-- Name: markers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.markers (
+    id bigint NOT NULL,
+    lat double precision,
+    lng double precision,
+    name character varying,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: markers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.markers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: markers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.markers_id_seq OWNED BY public.markers.id;
+
+
+--
 -- Name: messages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1743,6 +1777,13 @@ ALTER TABLE ONLY public.issues ALTER COLUMN id SET DEFAULT nextval('public.issue
 
 
 --
+-- Name: markers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.markers ALTER COLUMN id SET DEFAULT nextval('public.markers_id_seq'::regclass);
+
+
+--
 -- Name: messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2046,6 +2087,14 @@ ALTER TABLE ONLY public.issues
 
 ALTER TABLE ONLY public.languages
     ADD CONSTRAINT languages_pkey PRIMARY KEY (code);
+
+
+--
+-- Name: markers markers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.markers
+    ADD CONSTRAINT markers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2582,6 +2631,13 @@ CREATE INDEX index_issues_on_status ON public.issues USING btree (status);
 --
 
 CREATE INDEX index_issues_on_updated_by ON public.issues USING btree (updated_by);
+
+
+--
+-- Name: index_markers_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_markers_on_user_id ON public.markers USING btree (user_id);
 
 
 --
@@ -3153,6 +3209,14 @@ ALTER TABLE ONLY public.note_subscriptions
 
 
 --
+-- Name: markers fk_rails_a7009bc2b6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.markers
+    ADD CONSTRAINT fk_rails_a7009bc2b6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: oauth_access_grants fk_rails_b4b53e07b8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3523,6 +3587,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('23'),
 ('22'),
 ('21'),
+('20251028081834'),
+('20251024101713'),
 ('20250704143751'),
 ('20250506052030'),
 ('20250304172798'),
