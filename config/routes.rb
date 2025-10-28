@@ -137,6 +137,8 @@ OpenStreetMap::Application.routes.draw do
     end
   end
 
+  resources :markers, only: [ :index, :create, :destroy ]
+
   # Data browsing
   get "/way/:id" => "ways#show", :id => /\d+/, :as => :way
   get "/way/:id/history" => "old_ways#index", :id => /\d+/, :as => :way_history
