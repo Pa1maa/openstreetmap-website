@@ -106,6 +106,9 @@ L.OSM.MarkersControl = L.Control.extend({
                     allMarkerArr[i].remove()
                 }
                 allMarkerArr = []
+                if(delWrap.classList.contains("active")){
+                    delWrap.classList.remove("active")
+                }
             }
         })
 
