@@ -36,20 +36,38 @@ L.OSM.MarkersControl = L.Control.extend({
         let deleting = false
         let allMarkerArr = []
         let name
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+        const isLoggedIn = document.querySelector('meta[name="user-signed-in"]')?.content === "true"
 
-        L.DomEvent.on(saveBut, "click", L.DomEvent.stopPropagation).on(saveBut, "click", L.DomEvent.preventDefault).on(saveBut, "click", ()=>{
+        L.DomEvent.on(saveBut, "click", L.DomEvent.stopPropagation).on(saveBut, "click", L.DomEvent.preventDefault).on(saveBut, "click", async ()=>{
             const marker = L.OSM._marker && L.OSM._marker()
             
             if(marker){
                 name = prompt("Enter marker's name: ")
-                let markers = JSON.parse(localStorage.getItem("markers") || "[]")
+                const lat = marker.getLatLng().lat
+                const lng = marker.getLatLng().lng
+                
+                if(isLoggedIn){
+                    await fetch("/markers", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-Token": csrfToken
+                        },
+                        body: JSON.stringify({ marker: { lat, lng, name: name || "Marked location" } })
+                    })
+                }
+                else{
+                    let markers = JSON.parse(localStorage.getItem("markers") || "[]")
 
-                markers.push({
-                    lat: marker.getLatLng().lat,
-                    lng: marker.getLatLng().lng,
-                    name: name || "Marked location"
-                })
-                localStorage.setItem("markers", JSON.stringify(markers))
+                    markers.push({
+                        lat: marker.getLatLng().lat,
+                        lng: marker.getLatLng().lng,
+                        name: name || "Marked location"
+                    })
+                    localStorage.setItem("markers", JSON.stringify(markers))
+                }
+
                 marker.remove()
             }
             else{
@@ -57,17 +75,28 @@ L.OSM.MarkersControl = L.Control.extend({
             }
         })
 
-        L.DomEvent.on(showBut, "click", L.DomEvent.stopPropagation).on(showBut, "click", L.DomEvent.preventDefault).on(showBut, "click", ()=>{
+        L.DomEvent.on(showBut, "click", L.DomEvent.stopPropagation).on(showBut, "click", L.DomEvent.preventDefault).on(showBut, "click", async ()=>{
             showing = !showing
 
             if(showing){
                 showWrap.classList.add("active")
 
-                const markers = JSON.parse(localStorage.getItem("markers") || "[]")
+                let markers = []
+
+                if(isLoggedIn){
+                    const res = await fetch("/markers")
+                    markers = await res.json()
+                }
+                else{
+                    markers = JSON.parse(localStorage.getItem("markers") || "[]")
+                }
+
+
 
                 for(let i = 0; i < markers.length; i++){
                     const marker = L.marker([markers[i].lat, markers[i].lng], { icon: OSM.getMarker({}) }).addTo(map)
                     marker.bindPopup(markers[i].name, { autoClose: false }).openPopup()
+                    marker._id = markers[i].id || Date.now() + i
                     allMarkerArr.push(marker)
                 }
             }
@@ -80,26 +109,45 @@ L.OSM.MarkersControl = L.Control.extend({
             }
         })
 
-        L.DomEvent.on(delBut, "click", L.DomEvent.stopPropagation).on(delBut, "click", L.DomEvent.preventDefault).on(delBut, "click", ()=>{
-            let markers = JSON.parse(localStorage.getItem("markers") || "[]")
-            
+        L.DomEvent.on(delBut, "click", L.DomEvent.stopPropagation).on(delBut, "click", L.DomEvent.preventDefault).on(delBut, "click", async ()=>{
             deleting = !deleting
             
             if(deleting && showing){
+                let markers = []
+
+                if(isLoggedIn){
+                    const res = await fetch("/markers")
+                    markers = await res.json()
+                }
+                else{
+                    markers = JSON.parse(localStorage.getItem("markers") || "[]")
+                }
+
                 delWrap.classList.add("active")
                 for(let i = 0; i < allMarkerArr.length; i++){
                     const marker = allMarkerArr[i]
                     const latlng = marker.getLatLng()
 
-                    marker.on("click", function onDelete(){
+                    marker.on("click", async function onDelete(){
                         marker.remove()
-                        for(j = 0; j < markers.length; j++){
-                            if(latlng.lat === markers[j].lat && latlng.lng === markers[j].lng){
-                                markers.splice(j, 1)
-                                break
-                            }
+
+                        if(isLoggedIn){
+                            await fetch(`/markers/${marker._id}`, {
+                                method: "DELETE",
+                                headers: {
+                                    "X-CSRF-Token": csrfToken
+                                }
+                            })
                         }
-                        localStorage.setItem("markers", JSON.stringify(markers))
+                        else{
+                            for(j = 0; j < markers.length; j++){
+                                if(latlng.lat === markers[j].lat && latlng.lng === markers[j].lng){
+                                    markers.splice(j, 1)
+                                    break
+                                }
+                            }
+                            localStorage.setItem("markers", JSON.stringify(markers))
+                        }
                         allMarkerArr.splice(i, 1)
 
                         marker.off("click", onDelete)
