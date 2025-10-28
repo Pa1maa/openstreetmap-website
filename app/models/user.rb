@@ -91,6 +91,8 @@ class User < ApplicationRecord
 
   has_many :reports
 
+  has_many :markers, dependent: :destroy
+
   has_many :social_links
   accepts_nested_attributes_for :social_links, :allow_destroy => true
 
@@ -337,6 +339,7 @@ class User < ApplicationRecord
   ##
   # returns true if the user has the requested role
   def role?(role)
+    # binding.break
     roles.any? { |r| r.role == role }
   end
 
