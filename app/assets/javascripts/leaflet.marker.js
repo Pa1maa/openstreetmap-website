@@ -71,6 +71,8 @@ L.OSM.Marker = L.Control.extend({
         this._marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: OSM.getMarker({})}).addTo(this._map)
         this._marker.bindPopup("Lat: " + e.latlng.lat.toFixed(3) + ", Lng: " + e.latlng.lng.toFixed(3), { closeButton: false, closeOnEscapeKey: false }).openPopup()
 
+        this._map._marker = this._marker
+
         this._marker.off("click")
         this._marker.on("click", ()=>{
             this._marker.remove()
