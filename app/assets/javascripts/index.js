@@ -11,6 +11,7 @@
 //= require leaflet.query
 //= require leaflet.contextmenu
 //= require leaflet.marker
+//= require leaflet.save-marker.js
 //= require leaflet.marker_control
 //= require index/contextmenu
 //= require index/search
@@ -142,6 +143,7 @@ $(function () {
 
   addControlGroup([
     L.OSM.marker({ position }),
+    L.OSM.saveMarker({ position }),
     L.OSM.markerControls({ position })
   ])
 
