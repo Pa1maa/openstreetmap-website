@@ -2,54 +2,80 @@ L.OSM.Marker = L.Control.extend({
     options: {
         position: "topright"
     },
-
+    
     onAdd: function(map){
+        this._map = map
         const container = L.DomUtil.create("div", "leaflet-control")
-        const link = L.DomUtil.create("a", "control-button", container)
+        
+        this._container = container
+        this._marker = null
+        this._active = false
+
+        this._createButton("Add marker")
+        this._addDomEvents()
+
+        return container
+    },
+
+    _createButton: function(title){
+        const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
-        link.title = "Mark location"
+        link.title = title
+
         $(L.SVG.create("svg"))
             .append($(L.SVG.create("use")).attr("href", "#icon-marker"))
             .attr("class", "h-100 w-100")
             .appendTo(link);
 
-        let marker = null
-        let placing = false
+        this._link = link
+    },
 
-        function onMapClick(e){
-            if(marker){
-                marker.remove()
-            }
+    activate: function(){
+        if(this._active) return
 
-            marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: OSM.getMarker({})}).addTo(map)
-            marker.bindPopup("Lat: " + e.latlng.lat.toFixed(3) + ", Lng: " + e.latlng.lng.toFixed(3)).openPopup()
+        this._active = true
+        this._map.on("click", this._onMapClick, this)
+        this._container.classList.add("active")
+    },
+    
+    deactivate: function(){
+        if(!this._active) return
+        
+        this._active = false
+        this._map.off("click", this._onMapClick, this)
+        this._container.classList.remove("active")
+        this._marker?.remove()
+    },
 
-            marker.on("click", ()=>{
-                marker.remove()
-                marker = null
-            })
+    toggle: function(){
+        if(this._active){
+            this.activate()
+        }
+        else{
+            this.deactivate()
+        }
+    },
+
+    _addDomEvents: function(){
+        L.DomEvent.on(this._link, "click", (e)=>{
+            L.DomEvent.stop(e)
+            this.toggle()
+        })
+    },
+
+    _onMapClick: function(e){
+        if(this._marker){
+            this._marker.remove()
         }
 
-        L.OSM._marker = () => marker
+        this._marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: OSM.getMarker({})}).addTo(map)
+        this._marker.bindPopup("Lat: " + e.latlng.lat.toFixed(3) + ", Lng: " + e.latlng.lng.toFixed(3)).openPopup()
 
-        L.DomEvent.on(link, "click", L.DomEvent.stopPropagation).on(link, "click", L.DomEvent.preventDefault).on(link, "click", ()=>{
-            placing = !placing
-
-            if(placing){
-                container.classList.add("active")
-                map.on("click", onMapClick)
-            }
-            else{
-                container.classList.remove("active")
-                map.off("click", onMapClick)
-                if(marker){
-                    marker.remove()
-                    marker = null
-                }
-            }
+        this._marker.off("click")
+        this._marker.on("click", ()=>{
+            this._marker.remove()
+            this._marker = null
         })
-
-        return container
     }
 })
 
