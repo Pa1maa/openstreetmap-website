@@ -1,5 +1,3 @@
-//= require leaflet.add_marker
-
 L.OSM.MarkersControl = L.Control.extend({
     options: {
         position: "topright"
