@@ -10,7 +10,7 @@
 //= require leaflet.polyline
 //= require leaflet.query
 //= require leaflet.contextmenu
-//= require leaflet.add_marker
+//= require leaflet.marker
 //= require leaflet.marker_control
 //= require index/contextmenu
 //= require index/search
@@ -141,7 +141,7 @@ $(function () {
   ]);
 
   addControlGroup([
-    L.OSM.addMarker({ position }),
+    L.OSM.marker({ position }),
     L.OSM.markerControls({ position })
   ])
 
