@@ -61,6 +61,7 @@ L.OSM.SaveMarker = L.Control.extend({
             }
 
             marker.remove()
+            this._map._marker = null
         }
         else{
             alert("Put a marker first!")
