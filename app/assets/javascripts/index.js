@@ -13,6 +13,7 @@
 //= require leaflet.marker
 //= require leaflet.save-marker
 //= require leaflet.saved-markers
+//= require leaflet.delete-marker
 //= require leaflet.marker_control
 //= require index/contextmenu
 //= require index/search
@@ -146,6 +147,7 @@ $(function () {
     L.OSM.marker({ position }),
     L.OSM.saveMarker({ position }),
     L.OSM.savedMarkers({ position }),
+    L.OSM.deleteMarkers({ position })
   ])
 
 
