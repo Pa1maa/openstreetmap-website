@@ -62,6 +62,7 @@ L.OSM.SavedMarkers = L.Control.extend({
         L.DomEvent.on(this._link, "click", (e)=>{
             L.DomEvent.stop(e)
             this.toggle()
+            this._map._show = this._active
         })
     },
 
@@ -82,6 +83,8 @@ L.OSM.SavedMarkers = L.Control.extend({
             marker._id = markers[i].id || Date.now() + i
             this._markerArr.push(marker)
         }
+
+        this._map._markers = this._markerArr
     },
 
     _removeMarkers: function(){
