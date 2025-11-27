@@ -35,7 +35,6 @@ L.OSM.DeleteMarkers = L.Control.extend({
     activate: async function(){
         if(this._active || !this._map._show) return
 
-        console.log(this._map._markers)
         this._container.classList.add("active")
         this._active = true
         await this._deleteMarkers()
