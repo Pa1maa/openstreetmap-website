@@ -14,7 +14,6 @@
 //= require leaflet.save-marker
 //= require leaflet.saved-markers
 //= require leaflet.delete-marker
-//= require leaflet.marker_control
 //= require index/contextmenu
 //= require index/search
 //= require index/layers/data
