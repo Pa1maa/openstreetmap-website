@@ -13,19 +13,19 @@ L.OSM.DeleteMarkers = L.Control.extend({
 
         this._active = false
 
-        this._createButton("Delete markers")
+        this._createButton("Delete markers", "delete")
         this._addDomEvents()
 
         return container
     },
 
-    _createButton: function(title){
+    _createButton: function(title, className){
         const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
         link.title = title
 
         $(L.SVG.create("svg"))
-            .append($(L.SVG.create("use")).attr("href", "#icon-delete"))
+            .append($(L.SVG.create("use")).attr("href", `#icon-${className}`))
             .attr("class", "h-100 w-100")
             .appendTo(link);
 
