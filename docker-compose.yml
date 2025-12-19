@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: docker/postgres/Dockerfile
     ports:
-      - "54321:5432"
+      - "5000:5432"
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: openstreetmap
