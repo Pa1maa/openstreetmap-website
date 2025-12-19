@@ -13,18 +13,18 @@ L.OSM.SaveMarker = L.Control.extend({
         this._csrf = document.querySelector('meta[name="csrf-token"]')?.content
         this._logged = document.querySelector('meta[name="user-signed-in"]')?.content === "true"
 
-        this._createButton("Save marker")
+        this._createButton("Save marker", "save")
         this._addDomEvents()
 
         return container
     },
 
-    _createButton: function(title){
+    _createButton: function(title, className){
         const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
         link.title = title
         $(L.SVG.create("svg"))
-            .append($(L.SVG.create("use")).attr("href", "#icon-save"))
+            .append($(L.SVG.create("use")).attr("href", `#icon-${className}`))
             .attr("class", "h-100 w-100")
             .appendTo(link);
 
