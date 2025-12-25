@@ -1,9 +1,5 @@
-L.OSM.Marker = L.Control.extend({
-    options: {
-        position: "topright"
-    },
-    
-    onAdd: function(map){
+L.OSM.Marker = new class extends L.Control{
+    onAdd(map){
         this._map = map
         const container = L.DomUtil.create("div", "leaflet-control")
         
@@ -15,9 +11,9 @@ L.OSM.Marker = L.Control.extend({
         this._addDomEvents()
 
         return container
-    },
+    }
 
-    _createButton: function(title, className){
+    _createButton(title, className){
         const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
         link.title = title
@@ -28,42 +24,42 @@ L.OSM.Marker = L.Control.extend({
             .appendTo(link);
 
         this._link = link
-    },
+    }
 
-    activate: function(){
+    activate(){
         if(this._active) return
 
         this._active = true
         this._map.on("click", this._onMapClick, this)
         this._container.classList.add("active")
-    },
-    
-    deactivate: function(){
+    }
+
+    deactivate(){
         if(!this._active) return
         
         this._active = false
         this._map.off("click", this._onMapClick, this)
         this._container.classList.remove("active")
         this._marker?.remove()
-    },
+    }
 
-    toggle: function(){
+    toggle(){
         if(!this._active){
             this.activate()
         }
         else{
             this.deactivate()
         }
-    },
+    }
 
-    _addDomEvents: function(){
+    _addDomEvents(){
         L.DomEvent.on(this._link, "click", (e)=>{
             L.DomEvent.stop(e)
             this.toggle()
         })
-    },
+    }
 
-    _onMapClick: function(e){
+    _onMapClick(e){
         if(this._marker){
             this._marker.remove()
         }
@@ -79,8 +75,4 @@ L.OSM.Marker = L.Control.extend({
             this._marker = null
         })
     }
-})
-
-L.OSM.marker = function(options){
-    return new L.OSM.Marker(options)
 }
