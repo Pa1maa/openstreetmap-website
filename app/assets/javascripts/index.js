@@ -145,7 +145,7 @@ $(function () {
   addControlGroup([
     L.OSM.Marker.addTo(map),
     L.OSM.SaveMarker.addTo(map),
-    L.OSM.savedMarkers({ position }),
+    L.OSM.SavedMarkers.addTo(map),
     L.OSM.deleteMarkers({ position })
   ])
 
