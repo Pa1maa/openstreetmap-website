@@ -1,11 +1,5 @@
-//= require leaflet.marker
-
-L.OSM.SaveMarker = L.Control.extend({
-    options: {
-        position: "topright"
-    },
-
-    onAdd: function(map){
+L.OSM.SaveMarker = new class extends L.Control{
+    onAdd(map){
         this._map = map
         const container = L.DomUtil.create("div", "leaflet-control")
         this._container = container
@@ -17,9 +11,9 @@ L.OSM.SaveMarker = L.Control.extend({
         this._addDomEvents()
 
         return container
-    },
+    }
 
-    _createButton: function(title, className){
+    _createButton(title, className){
         const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
         link.title = title
@@ -29,9 +23,9 @@ L.OSM.SaveMarker = L.Control.extend({
             .appendTo(link);
 
         this._link = link
-    },
+    }
 
-    activate: async function(){
+    async activate(){
         const marker = this._map._marker
 
         if(marker){
@@ -66,16 +60,12 @@ L.OSM.SaveMarker = L.Control.extend({
         else{
             alert("Put a marker first!")
         }
-    },
+    }
 
-    _addDomEvents: function(){
+    _addDomEvents(){
         L.DomEvent.on(this._link, "click", async (e)=>{
             L.DomEvent.stop(e)
             await this.activate()
         })
     }
-})
-
-L.OSM.saveMarker = function(options){
-    return new L.OSM.SaveMarker(options)
 }
