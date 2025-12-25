@@ -1,9 +1,5 @@
-L.OSM.SavedMarkers = L.Control.extend({
-    options: {
-        position: "topright"
-    },
-
-    onAdd: function(map){
+L.OSM.SaveMarker = new class extends L.Control {
+    onAdd(map){
         this._map = map
         const container = L.DomUtil.create("div", "leaflet-control")
         this._container = container
@@ -18,9 +14,9 @@ L.OSM.SavedMarkers = L.Control.extend({
         this._addDomEvents()
 
         return container
-    },
+    }
 
-    _createButton: function(title, className){
+    _createButton(title, className){
         const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
         link.title = title
@@ -31,23 +27,23 @@ L.OSM.SavedMarkers = L.Control.extend({
             .appendTo(link);
 
         this._link = link
-    },
+    }
 
-    activate: async function(){
+    async activate(){
         if(this._active) return
 
         this._active = true
         this._container.classList.add("active")
         await this._addMarkers()
-    },
+    }
 
-    deactivate: function(){
+    deactivate(){
         if(!this._active) return
 
         this._active = false
         this._container.classList.remove("active")
         this._removeMarkers()
-    },
+    }
 
     toggle(){
         if(this._active){
@@ -56,17 +52,17 @@ L.OSM.SavedMarkers = L.Control.extend({
         else{
             this.activate()
         }
-    },
+    }
 
-    _addDomEvents: function(){
+    _addDomEvents(){
         L.DomEvent.on(this._link, "click", (e)=>{
             L.DomEvent.stop(e)
             this.toggle()
             this._map._show = this._active
         })
-    },
+    }
 
-    _addMarkers: async function(){
+    async _addMarkers(){
         let markers = []
 
         if(this._logged){
@@ -85,16 +81,12 @@ L.OSM.SavedMarkers = L.Control.extend({
         }
 
         this._map._markers = this._markerArr
-    },
+    }
 
-    _removeMarkers: function(){
+    _removeMarkers(){
         for(let i = 0; i < this._markerArr.length; i++){
             this._markerArr[i].remove()
         }
         this._markerArr = []
     }
-})
-
-L.OSM.savedMarkers = function(options){
-    return new L.OSM.SavedMarkers(options)
 }
