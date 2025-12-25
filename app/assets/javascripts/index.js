@@ -146,7 +146,7 @@ $(function () {
     L.OSM.Marker.addTo(map),
     L.OSM.SaveMarker.addTo(map),
     L.OSM.SavedMarkers.addTo(map),
-    L.OSM.deleteMarkers({ position })
+    L.OSM.DeleteMarkers.addTo(map)
   ])
 
 
