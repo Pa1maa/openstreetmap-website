@@ -1,9 +1,5 @@
-L.OSM.DeleteMarkers = L.Control.extend({
-    options: {
-        position: "topright"
-    },
-
-    onAdd: function(map){
+L.OSM.DeleteMarkers = new class extends L.Control {
+    onAdd(map){
         this._map = map
         const container = L.DomUtil.create("div", "leaflet-control")
         this._container = container
@@ -17,9 +13,9 @@ L.OSM.DeleteMarkers = L.Control.extend({
         this._addDomEvents()
 
         return container
-    },
+    }
 
-    _createButton: function(title, className){
+    _createButton(title, className){
         const link = L.DomUtil.create("a", "control-button", this._container)
         link.href = "#"
         link.title = title
@@ -30,40 +26,40 @@ L.OSM.DeleteMarkers = L.Control.extend({
             .appendTo(link);
 
         this._link = link
-    },
+    }
 
-    activate: async function(){
+    async activate(){
         if(this._active || !this._map._show) return
 
         this._container.classList.add("active")
         this._active = true
         await this._deleteMarkers()
-    },
+    }
 
-    deactivate: function(){
+    deactivate(){
         if(!this._active) return
 
         this._container.classList.remove("active")
         this._active = false
-    },
+    }
 
-    toggle: async function(){
+    async toggle(){
         if(this._active){
             this.deactivate()
         }
         else{
             await this.activate()
         }
-    },
+    }
 
-    _addDomEvents: function(){
+    _addDomEvents(){
         L.DomEvent.on(this._link, "click", async (e)=>{
             L.DomEvent.stop(e)
             await this.toggle()
         })
-    },
+    }
 
-    _deleteMarkers: async function(){
+    async _deleteMarkers(){
         let markers = []
 
         if(this._logged){
@@ -105,8 +101,4 @@ L.OSM.DeleteMarkers = L.Control.extend({
             })
         })
     }
-})
-
-L.OSM.deleteMarkers = function(options){
-    return new L.OSM.DeleteMarkers(options)
 }
