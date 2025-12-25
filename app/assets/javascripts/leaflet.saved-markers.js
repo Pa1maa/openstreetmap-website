@@ -1,4 +1,4 @@
-L.OSM.SaveMarker = new class extends L.Control {
+L.OSM.SavedMarker = new class extends L.Control {
     onAdd(map){
         this._map = map
         const container = L.DomUtil.create("div", "leaflet-control")
