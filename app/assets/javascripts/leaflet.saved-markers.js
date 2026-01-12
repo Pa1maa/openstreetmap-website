@@ -1,3 +1,5 @@
+//require leaflet.marker
+
 L.OSM.SavedMarkers = new class extends L.Control {
     onAdd(map){
         this._map = map
@@ -32,6 +34,7 @@ L.OSM.SavedMarkers = new class extends L.Control {
         this._active = true
         this._container.classList.add("active")
         await this._addMarkers()
+        L.OSM.Marker.reset()
     }
 
     deactivate(){
