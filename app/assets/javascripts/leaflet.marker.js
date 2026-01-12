@@ -1,16 +1,15 @@
 L.OSM.Marker = new class extends L.Control{
     onAdd(map){
         this._map = map
-        const container = L.DomUtil.create("div", "leaflet-control")
-        
-        this._container = container
+        this._container = L.DomUtil.create("div", "leaflet-control")
+
         this._marker = null
         this._active = false
 
         this._createButton("Add marker", "marker")
         this._addDomEvents()
 
-        return container
+        return this._container
     }
 
     _createButton(title, className){
