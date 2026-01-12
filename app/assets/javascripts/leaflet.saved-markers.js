@@ -16,16 +16,14 @@ L.OSM.SavedMarkers = new class extends L.Control {
     }
 
     _createButton(title, className){
-        const link = L.DomUtil.create("a", "control-button", this._container)
-        link.href = "#"
-        link.title = title
-        
+        this._link = L.DomUtil.create("a", "control-button", this._container)
+        this._link.href = "#"
+        this._link.title = title
+
         $(L.SVG.create("svg"))
             .append($(L.SVG.create("use")).attr("href", `#icon-${className}`))
             .attr("class", "h-100 w-100")
-            .appendTo(link);
-
-        this._link = link
+            .appendTo(this._link);
     }
 
     async activate(){
