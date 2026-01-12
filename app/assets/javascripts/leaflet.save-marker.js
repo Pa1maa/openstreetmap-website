@@ -1,8 +1,7 @@
 L.OSM.SaveMarker = new class extends L.Control{
     onAdd(map){
         this._map = map
-        const container = L.DomUtil.create("div", "leaflet-control")
-        this._container = container
+        this._container = L.DomUtil.create("div", "leaflet-control")
 
         this._csrf = document.querySelector('meta[name="csrf-token"]')?.content
         this._logged = document.querySelector('meta[name="user-signed-in"]')?.content === "true"
@@ -10,7 +9,7 @@ L.OSM.SaveMarker = new class extends L.Control{
         this._createButton("Save marker", "save")
         this._addDomEvents()
 
-        return container
+        return this._container
     }
 
     _createButton(title, className){
