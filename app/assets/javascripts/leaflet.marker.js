@@ -63,13 +63,21 @@ L.OSM.Marker = new class extends L.Control{
         })
     }
 
-    _onMapClick(e){
+    async _onMapClick(e){
         if(this._marker){
             this._marker.remove()
         }
 
         this._marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: OSM.getMarker({})}).addTo(this._map)
-        this._marker.bindPopup("Lat: " + e.latlng.lat.toFixed(3) + ", Lng: " + e.latlng.lng.toFixed(3), { closeButton: false, closeOnEscapeKey: false }).openPopup()
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${e.latlng.lat}&lon=${e.latlng.lng}&accept-language=en`
+        const response = await fetch(url, {
+            "Accept": "application/json",
+            "User-Agent": "osm-learning-app (local development)"
+        })
+        const data = await response.json()
+        const address = data.display_name || "Lat: " + e.latlng.lat + ", Lon: " + e.latlng.lng
+
+        this._marker.bindPopup(address, { closeButton: false, closeOnEscapeKey: false }).openPopup()
 
         this._map._marker = this._marker
 
