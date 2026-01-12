@@ -1,4 +1,5 @@
 //require leaflet.marker
+//require leaflet.delete-marker
 
 L.OSM.SavedMarkers = new class extends L.Control {
     onAdd(map){
@@ -43,6 +44,8 @@ L.OSM.SavedMarkers = new class extends L.Control {
         this._active = false
         this._container.classList.remove("active")
         this._removeMarkers()
+        L.OSM.DeleteMarkers.reset()
+
     }
 
     toggle(){
