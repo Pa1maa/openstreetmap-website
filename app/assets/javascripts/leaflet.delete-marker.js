@@ -49,6 +49,10 @@ L.OSM.DeleteMarkers = new class extends L.Control {
         }
     }
 
+    reset(){
+        this.deactivate()
+    }
+
     _addDomEvents(){
         L.DomEvent.on(this._link, "click", async (e)=>{
             L.DomEvent.stop(e)
