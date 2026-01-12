@@ -1,3 +1,5 @@
+//require leaflet.saved-markers
+
 L.OSM.Marker = new class extends L.Control{
     onAdd(map){
         this._map = map
@@ -29,6 +31,7 @@ L.OSM.Marker = new class extends L.Control{
         this._active = true
         this._map.on("click", this._onMapClick, this)
         this._container.classList.add("active")
+        L.OSM.SavedMarkers.reset()
     }
 
     deactivate(){
