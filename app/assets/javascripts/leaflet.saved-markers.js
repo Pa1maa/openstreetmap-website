@@ -51,6 +51,10 @@ L.OSM.SavedMarkers = new class extends L.Control {
         }
     }
 
+    reset(){
+        this.deactivate()
+    }
+
     _addDomEvents(){
         L.DomEvent.on(this._link, "click", (e)=>{
             L.DomEvent.stop(e)
