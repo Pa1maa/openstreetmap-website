@@ -32,9 +32,9 @@ L.OSM.SavedMarkers = new class extends L.Control {
     async activate(){
         if(this._active) return
 
+        await this._addMarkers()
         this._active = true
         this._container.classList.add("active")
-        await this._addMarkers()
         L.OSM.Marker.reset()
     }
 
