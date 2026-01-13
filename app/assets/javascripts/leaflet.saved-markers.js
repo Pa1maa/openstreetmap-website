@@ -82,7 +82,7 @@ L.OSM.SavedMarkers = new class extends L.Control {
 
         for(let i = 0; i < markers.length; i++){
             const marker = L.marker([markers[i].lat, markers[i].lng], { icon: OSM.getMarker({}) }).addTo(this._map)
-            marker.bindPopup(markers[i].name, { autoClose: false, closeOnClick: false }).openPopup()
+            marker.bindPopup(markers[i].name, { autoClose: false, closeOnClick: false, closeButton: false, closeOnEscapeKey: false }).openPopup()
             marker._id = markers[i].id || Date.now() + i
             this._markerArr.push(marker)
         }
